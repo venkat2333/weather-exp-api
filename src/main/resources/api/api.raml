@@ -1,0 +1,39 @@
+#%RAML 1.0
+title: weather-exp-api
+version: 1.0
+description: This API accepts the ipaddress as input and provides the weather details to the user.
+
+traits:
+  client-id-required:
+    headers:
+      client_id:
+        type: string
+      client_secret:
+        type: string
+
+/weather:
+ get:
+  is: [client-id-required]
+  description: Retrieves weather details based on the ip address
+  queryParameters:
+   ipaddress:
+    required: true
+    type: string
+    pattern: '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
+  responses:
+   200:
+    body:
+     application/json:
+      example:
+   400:
+    body:
+     application/json:
+      example:
+   401:
+    body:
+     application/json:
+      example:
+   500:
+    body:
+     application/json:
+      example:

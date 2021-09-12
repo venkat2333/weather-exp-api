@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	
+	<flow name="weatherDetails" doc:id="31a7cf72-c2ce-4a58-a2d8-21a5e55d9659" >
+		<logger level="INFO" doc:name="Logger" doc:id="9e6567da-6c80-42bf-a29c-d10bca89c560" message="Ip address received: #[attributes.queryParams.ipaddress]"/>
+		<set-variable value="#[attributes.queryParams.ipaddress]" doc:name="Store ip address" doc:id="d979bfb2-5d66-4a5e-87ca-01d5c2379eba" variableName="ipAddress"/>
+		<logger level="INFO" doc:name="Logger" doc:id="06a990e4-00fa-4526-96b5-f8111169210a" message="Sending request to get weather details for ip address #[vars.ipaddress]"/>
+		<http:request method="GET" doc:name="Invoke Location Process API" doc:id="7b8135fd-4bc2-4059-9635-7e709c3b3f2a" config-ref="HTTP_Request_configuration" path="/api/location" sendCorrelationId="ALWAYS">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	client_secret : attributes.headers.client_secret,
+	client_id : attributes.headers.client_id
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	ipaddress : vars.ipAddress
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="41f250a4-f73f-438a-ac54-06e9fe88a6b2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="83a4c30b-49a6-4a3d-8164-2a31c42a2a50" message="Weather Details for the ip #[payload]"/>
+	</flow>
+</mule>
