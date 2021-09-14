@@ -3,13 +3,12 @@ anypoint:
   client_secret: ""
       
 api:
-  id: ""
-  name: "weather-experience"
+  id: "17256859"
+  name: "weather-exp-api"
   version: "v1"
   path: "/api/experience/v1"
   
-  
 http:
   port: "80"
-  host: "location-process.us-e2.cloudhub.io"
+  host: "proc-api-location.us-e2.cloudhub.io"
   path: "/api/location"

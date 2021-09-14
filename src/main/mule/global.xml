@@ -12,7 +12,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<configuration-properties doc:name="Configuration properties" doc:id="e05a4eb8-bbe2-4e3b-a0d5-4fd5503124a5" file="weather-exp-api.yaml" />
 	
 	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="064a3747-c857-4140-a2a9-d30f92476961" >
-		<http:request-connection host="location-process.us-e2.cloudhub.io" port="80" />
+		<http:request-connection host="${http.host}" />
 	</http:request-config>
 	
 	<http:listener-config name="weather-experience-httpListenerConfig">
@@ -21,6 +21,6 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
     
     <apikit:config name="weather-experience-config" api="api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
 
-<!-- 	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="58bfd576-a4aa-4853-a367-2d485482f950" flowRef="weather-experience-main" /> -->
+	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="58bfd576-a4aa-4853-a367-2d485482f950" flowRef="weather-experience-main" />
 
 </mule>
